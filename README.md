@@ -1,6 +1,6 @@
 # Project Name
 
-This is a take-home-test repository with a simple REST API definition for a fictious PoS retail system named Acme.  The assignment was open on use of technology stack and implementation framework.
+This is a take-home-test repository with a simple REST API definition for a fictitious PoS retail system named Acme.  The assignment was open on use of technology stack and implementation framework.
 
 ## Approach Taken
 
