@@ -7,7 +7,7 @@ Spring Boot Server
 
 1. mvn clean install
 2. cd target
-3. java -jar swagger-codegen*.jar
+3. java -jar swagger-spring-1.0.0.jar
 
 ##
 #  API Testing with VS-Code REST Client 
