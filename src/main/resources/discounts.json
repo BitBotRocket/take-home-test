@@ -1,0 +1,12 @@
+[
+    {
+        "name": "BACK-TO-SCHOOL",
+        "discountUnit" : "percent",
+        "discount": 10
+    },
+    {
+        "name": "EMPLOYEE-DISCOUNT",
+        "discountUnit" : "fixed",
+        "discount": 5
+    }
+]

@@ -1,0 +1,100 @@
+GET http://127.0.0.1:8080/api/v1/products
+Accept: application/json
+
+###
+
+DELETE http://127.0.0.1:8080/api/v1/products
+Accept: application/json
+###
+
+GET http://127.0.0.1:8080/api/v1/products/product/1
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8080/api/v1/products
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Product1",
+  "price": 100
+}
+
+###
+
+GET http://127.0.0.1:8080/api/v1/products/product/1
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8080/api/v1/products
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Product2",
+  "price": 50
+}
+
+###
+
+POST http://127.0.0.1:8080/api/v1/products
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Product3",
+  "price": 22.50
+}
+
+###
+
+POST http://127.0.0.1:8080/api/v1/sales
+Accept: application/json
+Content-Type: application/json
+
+{
+    "discountCodes" : [
+        "BACK-TO-SCHOOL",
+        "EMPLOYEE-DISCOUNT"
+    ],
+    "productItems": [
+        {
+            "id": 1,
+            "quantity": 2
+        },
+        {
+            "id": 2,
+            "quantity": 2
+        },
+        {
+            "id": 3,
+            "quantity": 2
+        }
+    ]
+}
+
+###
+
+POST http://127.0.0.1:8080/api/v1/sales
+Accept: application/json
+Content-Type: application/json
+
+{
+    "discountCodes" : [],
+    "productItems": [
+        {
+            "id": 1,
+            "quantity": 2
+        },
+        {
+            "id": 2,
+            "quantity": 2
+        },
+        {
+            "id": 3,
+            "quantity": 2
+        }
+    ]
+}

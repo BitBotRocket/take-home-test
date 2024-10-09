@@ -1,0 +1,340 @@
+openapi: 3.0.3
+info:
+  title: Acme Sales and Inventory System
+  description: |-
+    Simple REST API contract for the Acme Product Management and Sales Retail Company   
+
+    We'll make some up-front assumptions:
+    - normally a critical aspect of REST APIs, but for this demonstration we will disable RBAC security
+    - bulk provisioning could be accomplished via a future extension of the POST /products API via
+      POST /products/bulk
+    - additional (optional) parameters were intentionally provided in some of the APIs to add support for 
+      paginated responses and basic filtering
+    
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: adams.dave.m@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  version: 1.0.6
+servers:
+  - url: https://127.0.0.1/api/v1
+tags:
+  - name: Products
+    description: inventory management + search + crud
+  - name: Sales
+    description: point of sales apis 
+paths:
+  /products/product/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Retrieve product 
+      description: Retrieve product by its identifier
+      operationId: getProductById
+      parameters:
+        - name: productId
+          in: path
+          description: product identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid Product Id supplied
+        '404':
+          description: Product not Found
+      security: []
+  /products:
+    post:
+      tags:
+        - Products
+      summary: Create Product
+      description: Create Product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProductResponse'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        '500':
+          description: Internal Server Error
+      security: []          
+    get:
+      tags:
+        - Products
+      summary: Query Products with Filter + Pagination
+      description: Return all products
+      operationId: getAllProducts
+      parameters:
+        - name: nameFilterMode
+          in: query
+          description: type of text base filter to apply to product name
+          required: false
+          explode: false
+          schema:
+            type: string
+            default: wildcard
+            enum:
+              - exact
+              - prefix
+              - postfix
+              - wildcard
+        - name: ignoreCase
+          in: query
+          description: ignore case
+          required: false
+          explode: false
+          schema:
+            type: boolean
+            default: true
+        - name: size
+          in: query 
+          description: number of products to return per page
+          required: false
+          schema:
+            type: number
+            format: integer
+            default: 0
+        - name: page
+          in: query
+          description: starting page index to retrieve
+          required: false
+          schema:
+            type: number
+            format: integer
+            default: 100
+        - name: productId
+          in: query
+          description: filter by product id
+          required: false
+          explode: false
+          schema:
+            type: string
+        - name: priceComparisonMode
+          in: query
+          description: type of text base filter to apply
+          required: false
+          explode: false
+          schema:
+            type: string
+            enum:
+              - gt
+              - lt
+              - gte
+              - lte
+              - eq
+        - name: price
+          in: query
+          description: find by price equality
+          required: false
+          explode: false
+          schema:
+            type: number
+            format: float
+            example: 24.99
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '405':
+          description: Bad Request - Invalid Parameters
+      security: []     
+    delete:
+      tags:
+        - Products
+      summary: Clear All Products
+      description: Clear All Products
+      operationId: clearAllProducts
+      responses:
+        '200':
+          description: successful operation
+      security: []          
+      
+  /sales:
+    post:
+      tags:
+        - Sales
+      summary: Submit Sales Request
+      description: Submit Sales Request
+      operationId: submitSalesRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalesRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SalesRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SalesRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesResponse'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        '500':
+          description: Internal Server Error
+      security: []             
+components:
+  schemas:
+    Products:
+      type: array
+      items:
+        anyOf:
+          - $ref: "#/components/schemas/Product"
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 100
+        name:
+          type: string
+          example: Acme Snow Board
+        price:
+          type: number
+          format: float
+          example: 25.99
+      xml:
+        name: product
+    CreateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Acme Helmet
+        price:
+          type: number
+          format: float
+          example: 52.50
+      xml:
+        name: createProductRequest
+    CreateProductResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 100
+        name:
+          type: string
+          example: Acme Helmet
+        price:
+          type: number
+          format: float
+          example: 52.50
+      xml:
+        name: createProductgResponse
+    SalesRequest:
+      type: object
+      properties:
+        discountCodes:
+          type: array
+          items:
+            type: string
+        productItems:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                format: float
+              quantity:
+                type: number
+                format: float
+      xml:
+        name: salesRequest
+    SalesResponse:
+      type: object
+      properties:
+        appliedDiscounts:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              discountUnit:
+                type: string
+                enum: [fixed, percent]
+              discount:
+                type: number
+                format: float
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 100
+              quantity: 
+                type: number
+                format: integer
+              unitPrice: 
+                type: number
+                format: float
+              appliedDiscount:
+                type: number
+                format: float
+              totalBeforeTax: 
+                type: number
+                format: float
+        salesSummary:
+          type: object
+          properties:
+            totalBeforeTaxes:
+              type: number
+              format: float
+            taxRate:
+              type: number
+              format: float
+            taxes:
+              type: number
+              format: float
+            totalAfterTaxes:
+              type: number
+              format: float
+      xml:
+        name: salesResponse
