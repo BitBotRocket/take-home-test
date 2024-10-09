@@ -16,9 +16,9 @@ Spring Boot Server
 1.  Load acme-api.http
 
 2.  Send requests to locally running 
-    - http://127.0.0.1/api/v1/products
-	- http://127.0.0.1/api/v1/sales
-	- http://127.0.0.1/api/v1/api-docs/swagger-ui
+    - http://127.0.0.1:8080/api/v1/products
+	- http://127.0.0.1:8080/api/v1/sales
+	- http://127.0.0.1:8080/api/v1/swagger-ui/#
 	
 
 
