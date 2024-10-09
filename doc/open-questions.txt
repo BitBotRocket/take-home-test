@@ -17,6 +17,9 @@ Open-Questions:
 
 
 TODO:
+- implement filter operations to enable paginated data retrieval and filtering
+- use mockaroo.com to build a default database with 1000 products, that we import
+  on startup to give us some better data for tesitng filtering paths
 - Junit coverage ( let's try Gen-AI to see what it can do) 
 - need some hardening/robustness around corruption / failure scenarios / parse errors
 - try refactoring swagger spec to cleanup the data model
