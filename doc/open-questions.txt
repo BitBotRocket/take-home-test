@@ -1,0 +1,24 @@
+Open-Questions:
+---------------
+1. Expected behavior if the product items are not found in the product database?  Does the whole txn fail?
+
+2. What happens if the calculated discount is greater than the price * quantity of a given item?
+
+3. What should the default response be if the cart is empty?
+
+4. What happens when the product is found but the price is 0.0?
+
+5. What happens when the product is found but the price is negative?
+
+6. What should the default response be if the cart is empty?
+
+ 
+   
+
+
+TODO:
+- Junit coverage ( let's try Gen-AI to see what it can do) 
+- need some hardening/robustness around corruption / failure scenarios / parse errors
+- try refactoring swagger spec to cleanup the data model
+- move classes outside of the generated swagger packages to make it easier for class regeneration
+ 
